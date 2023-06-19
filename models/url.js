@@ -1,6 +1,10 @@
 import {model, Schema, models} from 'mongoose'
 
 const MessageSchema = new Schema({
+  user: {
+    type: String,
+    required: true
+  },
   url: {
     type: String,
     required: true

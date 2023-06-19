@@ -1,25 +1,27 @@
 'use client'
 
-import { CacheProvider } from '@chakra-ui/next-js'
+import {CacheProvider} from '@chakra-ui/next-js'
 import {ChakraProvider, extendTheme} from '@chakra-ui/react'
 import {theme} from "../../theme/theme";
+import {CookiesProvider} from 'react-cookie';
+
 import {
-  QueryClient,
-  QueryClientProvider,
+    QueryClient,
+    QueryClientProvider,
 } from 'react-query'
 
-export function Providers({ children }) {
-  const queryClient = new QueryClient()
+export function Providers({children}) {
+    const queryClient = new QueryClient()
 
-  return (
-      <CacheProvider>
-        <ChakraProvider theme={extendTheme(theme)}>
-          <QueryClientProvider client={queryClient}>
-
-          {children}
-          </QueryClientProvider>
-
-        </ChakraProvider>
-      </CacheProvider>
-  )
+    return (
+        <CacheProvider>
+            <ChakraProvider theme={extendTheme(theme)}>
+                <CookiesProvider>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                </CookiesProvider>
+            </ChakraProvider>
+        </CacheProvider>
+    )
 }

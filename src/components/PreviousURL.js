@@ -4,27 +4,36 @@ import ms from 'ms'
 import {FaRegCopy, FaRegThumbsUp, FaRegTrashAlt} from "react-icons/fa";
 import {useMutation, useQueryClient} from "react-query";
 import axios from "axios";
+import {useCookies} from "react-cookie";
 
 export default function PreviousURL({data}) {
-  const {onCopy, value, setValue, hasCopied} = useClipboard("");
+  const [cookies, setCookie] = useCookies(['current-time-period']);
+  const {hasCopied} = useClipboard("");
   const queryClient = useQueryClient()
   const toast = useToast()
 
+  function setCopyValue() {
+    navigator.clipboard.writeText(`${window.location.href}${data.shortUrl}`)
+  }
 
   const {mutate, isLoading} = useMutation((id) => {
-    return axios.delete(`/api/urls?id=${id}`)
+    return axios.delete(`/api/urls?id=${id}`, {
+      headers: {
+        authorization: cookies['user-id']
+      }
+    })
   }, {
     onSuccess: (data) => {
       queryClient.invalidateQueries("previousUrls")
 
       toast({
-        title: 'URL Shortened',
+        title: 'URL Deleted',
         position: 'bottom',
         containerStyle: {
           marginBottom: "15px"
         },
         variant: 'subtle',
-        description: "We've shortened your URL for you.",
+        description: "We've deleted your URL.",
         status: 'success',
         duration: 9000,
         isClosable: true,
@@ -32,7 +41,7 @@ export default function PreviousURL({data}) {
     },
     onError: (err) => {
       toast({
-        title: 'Failed to Shorten URL',
+        title: 'Failed to Delete URL',
         position: 'bottom',
         containerStyle: {
           marginBottom: "15px"
@@ -46,7 +55,8 @@ export default function PreviousURL({data}) {
     }
   })
 
-  return <Tr background={'blackAlpha.200'}>
+  const isExpired = new Date().getTime() > new Date(data.expirationDate).getTime()
+  return <Tr background={isExpired ? 'blackAlpha.400' : 'blackAlpha.200'}>
     <Td>
       <Tag colorScheme={'green'}>
         /{data.shortUrl}
@@ -59,10 +69,13 @@ export default function PreviousURL({data}) {
     </Td>
     <Td>{ms(new Date().getTime() - new Date(data.createdTimestamp).getTime(), {long: true})} ago</Td>
     <Td>
+      {ms(new Date(data.expirationDate).getTime() - new Date().getTime(), {long: true})}
+    </Td>
+
+    <Td>
       <Flex justifyContent={'flex-end'} gap={2}>
-        <IconButton icon={hasCopied ? <FaRegThumbsUp/> : <FaRegCopy/>} onClick={() => {
-          setValue(`${window.location.href}${data.shortUrl}`)
-          onCopy()
+        <IconButton isDisabled={isExpired} icon={hasCopied ? <FaRegThumbsUp/> : <FaRegCopy/>} onClick={() => {
+          setCopyValue()
         }} aria-label={"Copy"}/>
         <IconButton onClick={() => {
           mutate(data.shortUrl)
