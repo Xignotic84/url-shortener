@@ -87,10 +87,13 @@ export default function PreviousURL({data}) {
 
     <Td>
       <Flex justifyContent={'flex-end'} gap={2}>
-        <IconButton isDisabled={isExpired} icon={hasCopied ? <FaRegThumbsUp/> : <FaRegCopy/>} onClick={() => {
+        <IconButton isDisabled={isExpired} icon={hasCopied ? <FaRegThumbsUp/> : <FaRegCopy/>} onClick={(e) => {
+          e.stopPropagation()
           setCopyValue()
         }} aria-label={"Copy"}/>
-        <IconButton onClick={() => {
+        <IconButton onClick={(e) => {
+          e.stopPropagation()
+
           mutate(data.shortUrl)
         }} icon={<FaRegTrashAlt/>} aria-label={"Delete"}/>
       </Flex>
