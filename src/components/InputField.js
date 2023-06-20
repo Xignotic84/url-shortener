@@ -22,7 +22,6 @@ export default function InputField() {
     const [input, setInput] = useState("")
     const [cookies, setCookie] = useCookies(['current-time-period']);
 
-
     const timePeriod = cookies['current-time-period']
     const queryClient = useQueryClient()
 
@@ -83,7 +82,7 @@ export default function InputField() {
             <IconButton as={MenuButton} ml={2} icon={<Icon as={FaRegClock}/>} aria-label={'Time period'}/>
             <MenuList>
                 {menuOptions.map((item, i) => {
-                    return <MenuItem bg={timePeriod.includes(item) && "blackAlpha.200"} onClick={() => setCurrentTimePeriod(item)}
+                    return <MenuItem bg={timePeriod?.includes(item) && "blackAlpha.200"} onClick={() => setCurrentTimePeriod(item)}
                                      key={i}>
                         {item}
                     </MenuItem>

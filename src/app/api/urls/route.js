@@ -6,6 +6,7 @@ import {models} from 'mongoose'
 
 const url = models.url
 import {headers} from 'next/headers'
+import * as uuid from "uuid";
 
 function isValidURL(str) {
     var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -31,7 +32,7 @@ export async function POST(req) {
         })
     }
 
-    if (!auth) {
+    if (!auth || !uuid.validate(auth)) {
         return NextResponse.json({code: 401, message: "User ID missing, refresh page"}, {
             status: 401
         })
@@ -58,7 +59,7 @@ export async function GET(req) {
     const auth = headersList.get('authorization')
     await Mongo()
 
-    if (!auth) {
+    if (!auth || !uuid.validate(auth)) {
         return NextResponse.json({code: 401, message: "User ID missing, refresh page"}, {
             status: 401
         })
@@ -85,8 +86,6 @@ export async function DELETE(req) {
         })
     }
 
-
-    console.log(auth, foundUrl.user)
     if (foundUrl.user !== auth) {
         return NextResponse.json({code: 403, message: "You don't have permission to delete this url"}, {
             status: 403

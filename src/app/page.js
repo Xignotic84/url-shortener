@@ -14,7 +14,6 @@ export default function Home() {
   const [cookies, setCookie] = useCookies(['user-id']);
 
   useEffect(() => {
-    console.log(cookies)
     const userId = cookies['user-id']
 
     if (!userId)

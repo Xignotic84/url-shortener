@@ -1,4 +1,4 @@
-import {Flex, IconButton, SlideFade, Tag, Td, Tr, useClipboard, useToast} from "@chakra-ui/react";
+import {Flex, IconButton, SlideFade, Tag, Td, Tr, useClipboard, useMediaQuery, useToast} from "@chakra-ui/react";
 
 import ms from 'ms'
 import {FaRegCopy, FaRegThumbsUp, FaRegTrashAlt} from "react-icons/fa";
@@ -11,6 +11,8 @@ export default function PreviousURL({data}) {
   const {hasCopied} = useClipboard("");
   const queryClient = useQueryClient()
   const toast = useToast()
+  const [isMobile] = useMediaQuery("(max-width: 800px)")
+
 
   function setCopyValue() {
     navigator.clipboard.writeText(`${window.location.href}${data.shortUrl}`)
@@ -67,10 +69,15 @@ export default function PreviousURL({data}) {
         {data.url}
       </Tag>
     </Td>
-    <Td>{ms(new Date().getTime() - new Date(data.createdTimestamp).getTime(), {long: true})} ago</Td>
-    <Td>
-      {ms(new Date(data.expirationDate).getTime() - new Date().getTime(), {long: true})}
-    </Td>
+    {!isMobile && <>
+      <Td>
+        {ms(new Date().getTime() - new Date(data.createdTimestamp).getTime(), {long: true})} ago
+      </Td>
+      <Td>
+        {ms(new Date(data.expirationDate).getTime() - new Date().getTime(), {long: true})}
+      </Td>
+    </>}
+
 
     <Td>
       <Flex justifyContent={'flex-end'} gap={2}>
