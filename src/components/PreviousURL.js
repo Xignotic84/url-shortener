@@ -5,9 +5,11 @@ import {FaRegCopy, FaRegThumbsUp, FaRegTrashAlt} from "react-icons/fa";
 import {useMutation, useQueryClient} from "react-query";
 import axios from "axios";
 import {useCookies} from "react-cookie";
+import {useRouter} from "next/navigation";
 
 export default function PreviousURL({data}) {
   const [cookies, setCookie] = useCookies(['current-time-period']);
+  const router = useRouter()
   const {hasCopied} = useClipboard("");
   const queryClient = useQueryClient()
   const toast = useToast()
@@ -58,7 +60,11 @@ export default function PreviousURL({data}) {
   })
 
   const isExpired = new Date().getTime() > new Date(data.expirationDate).getTime()
-  return <Tr background={isExpired ? 'blackAlpha.400' : 'blackAlpha.200'}>
+  return <Tr onClick={() => window.open(`/${data.shortUrl}`, '_blank')}
+             transition="all .25s ease"
+             cursor={'pointer'}
+             _hover={{transform: 'scale(0.99)', filter: "brightness(90%)",}}
+             background={isExpired ? 'blackAlpha.400' : 'blackAlpha.200'}>
     <Td>
       <Tag colorScheme={'green'}>
         /{data.shortUrl}

@@ -4,7 +4,7 @@ import {IconButton, Input, Icon, Flex, Center, useToast, Menu, MenuButton, MenuL
 import {FaArrowRight, FaRegClock} from "react-icons/fa";
 import {useMutation, useQueryClient} from "react-query"
 import axios from 'axios'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 
 
@@ -20,13 +20,18 @@ const menuOptions = [
 export default function InputField() {
     const toast = useToast()
     const [input, setInput] = useState("")
-    const [cookies, setCookie] = useCookies(['current-time-period']);
+    const [cookies, setCookie] = useCookies(['time-period']);
+    const [timePeriod, setTimePeriod] = useState()
 
-    const timePeriod = cookies['current-time-period']
     const queryClient = useQueryClient()
 
+    useEffect(() => {
+        setTimePeriod(cookies['time-period'] || "Never")
+    }, [cookies['time-period']])
+
     function setCurrentTimePeriod(period) {
-        setCookie('current-time-period', period)
+        setCookie('time-period', period)
+        setTimePeriod(period)
     }
 
     const {mutate, isLoading, isError} = useMutation(() => {

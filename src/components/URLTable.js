@@ -32,8 +32,6 @@ export default function URLTable() {
     }).then(r => r.data)
   })
 
-
-
   return <Center>
     <TableContainer w={'70rem'}>
       <Table size={'sm'} style={{borderCollapse: "separate", borderSpacing: "0 1em"}} variant='simple'>
