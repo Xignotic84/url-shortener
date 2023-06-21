@@ -15,7 +15,7 @@ export default function Home() {
     if (id !== undefined) {
 
       const res = await axios.get(`/api/url/${id}`).then(r => r.data)
-
+      return
       if (new Date().getTime() > new Date(res.expirationDate).getTime()) {
         toast({
           title: 'URL Expired',
@@ -49,7 +49,7 @@ export default function Home() {
 
   return (
       <Center mt={400}>
-        <Spinner size={'xl'}/>
+        <Spinner color={'accent'} size={'xl'}/>
       </Center>
   )
 }
