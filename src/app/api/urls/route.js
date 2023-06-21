@@ -25,7 +25,6 @@ export async function POST(req) {
     await Mongo()
     const body = await req.json()
 
-
     if (!isValidURL(body.url)) {
         return NextResponse.json({code: 400, message: "Invalid URL provided."}, {
             status: 400
@@ -52,7 +51,6 @@ export async function POST(req) {
 
     return NextResponse.json({shortUrl});
 }
-
 
 export async function GET(req) {
     const headersList = headers()

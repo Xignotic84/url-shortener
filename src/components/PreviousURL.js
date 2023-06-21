@@ -78,7 +78,7 @@ export default function PreviousURL({data}) {
     </Td>
     <Td>
       <Tag>
-        {data.url}
+        {data.url.length > 75 ? `${data.url.slice(0, 75)}...`: data.url}
       </Tag>
     </Td>
     {!isMobile && <>
