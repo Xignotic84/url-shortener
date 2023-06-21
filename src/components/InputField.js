@@ -20,7 +20,7 @@ const menuOptions = [
 export default function InputField() {
     const toast = useToast()
     const [input, setInput] = useState("")
-    const [cookies, setCookie] = useCookies(['time-period']);
+    const [cookies, setCookie] = useCookies(['time-period', 'user-id']);
     const [timePeriod, setTimePeriod] = useState()
 
     const queryClient = useQueryClient()
@@ -83,11 +83,12 @@ export default function InputField() {
     }
 
     function TimeSelector() {
-        return <Menu>
-            <IconButton as={MenuButton} ml={2} icon={<Icon as={FaRegClock}/>} aria-label={'Time period'}/>
-            <MenuList>
+        return <Menu borderRadius={8} w={'50%'}>
+            <IconButton borderRadius={8} as={MenuButton} ml={2} icon={<Icon mt={1} as={FaRegClock}/>} aria-label={'Time period'}/>
+            <MenuList bg={'blackAlpha.400'} w={'50%'}>
                 {menuOptions.map((item, i) => {
-                    return <MenuItem bg={timePeriod?.includes(item) && "blackAlpha.200"} onClick={() => setCurrentTimePeriod(item)}
+                    return <MenuItem _hover={{ bg: timePeriod?.includes(item) ? '' : 'whiteAlpha.300' }}
+                                     bg={timePeriod?.includes(item) && 'linear-gradient(135deg,#f08,#d0e)'} onClick={() => setCurrentTimePeriod(item)}
                                      key={i}>
                         {item}
                     </MenuItem>
@@ -99,10 +100,10 @@ export default function InputField() {
     return <>
         <Center p={5}>
             <Flex>
-                <Input isDisabled={isLoading} isInvalid={isError} w={'60vw'} placeholder='Your URL...'
+                <Input variant={'solid'} borderRadius={8} isDisabled={isLoading} isInvalid={isError} w={'60vw'} placeholder='Your URL...'
                        onKeyPress={handleKeyPress} onChange={(val) => setInput(val.target.value)}/>
                 <TimeSelector/>
-                <IconButton isLoading={isLoading} ml={2} cursor={'pointer'} boxSize={10} aria-label={"Shorten"}
+                <IconButton  borderRadius={8} variant={'solid'} background={'accent'} isLoading={isLoading} ml={2} cursor={'pointer'} boxSize={10} aria-label={"Shorten"}
                             icon={<FaArrowRight/>} onClick={() => mutate()}/>
             </Flex>
         </Center>

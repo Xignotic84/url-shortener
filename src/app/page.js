@@ -2,7 +2,7 @@
 
 import InputField from "../components/InputField";
 
-import {Box, Center, Heading, Text} from "@chakra-ui/react";
+import {Box, Center, Flex, Heading, Text} from "@chakra-ui/react";
 import URLTable from "../components/URLTable";
 import {useCookies} from "react-cookie";
 import {useEffect} from "react";
@@ -26,14 +26,12 @@ export default function Home() {
     <>
       <Box>
         <Center mt={100}>
-          <Box>
+          <Flex>
             <Heading>
-              Shorten your URL...
+              Shorten your
             </Heading>
-            <Text mt={2}>
-              Shorten your URL, fast and quickly...
-            </Text>
-          </Box>
+            <Heading ml={2} bg={'linear-gradient(135deg,#f08,#d0e)'} backgroundClip={'text'}>URL...</Heading>
+          </Flex>
         </Center>
         <InputField/>
         <URLTable/>

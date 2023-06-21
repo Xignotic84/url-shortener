@@ -1,4 +1,4 @@
-import {Flex, IconButton, SlideFade, Tag, Td, Tr, useClipboard, useMediaQuery, useToast} from "@chakra-ui/react";
+import {Flex, IconButton, Tag, Td, Tr, useMediaQuery, useToast} from "@chakra-ui/react";
 
 import ms from 'ms'
 import {FaRegCopy, FaRegThumbsUp, FaRegTrashAlt} from "react-icons/fa";
@@ -6,11 +6,12 @@ import {useMutation, useQueryClient} from "react-query";
 import axios from "axios";
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/navigation";
+import {useState} from "react";
 
 export default function PreviousURL({data}) {
-  const [cookies, setCookie] = useCookies(['current-time-period']);
+  const [cookies, setCookie] = useCookies(['current-time-period', 'user-id']);
   const router = useRouter()
-  const {hasCopied} = useClipboard("");
+  const [hasCopied, setHasCopied] = useState()
   const queryClient = useQueryClient()
   const toast = useToast()
   const [isMobile] = useMediaQuery("(max-width: 800px)")
@@ -18,6 +19,11 @@ export default function PreviousURL({data}) {
 
   function setCopyValue() {
     navigator.clipboard.writeText(`${window.location.href}${data.shortUrl}`)
+    setHasCopied(true)
+
+    setTimeout(() => {
+      setHasCopied(false)
+    }, 800)
   }
 
   const {mutate, isLoading} = useMutation((id) => {
@@ -63,10 +69,10 @@ export default function PreviousURL({data}) {
   return <Tr onClick={() => window.open(`/${data.shortUrl}`, '_blank')}
              transition="all .25s ease"
              cursor={'pointer'}
-             _hover={{transform: 'scale(0.99)', filter: "brightness(90%)",}}
+             _hover={{transform: 'scale(0.997)', filter: "brightness(90%)",}}
              background={isExpired ? 'blackAlpha.400' : 'blackAlpha.200'}>
     <Td>
-      <Tag colorScheme={'green'}>
+      <Tag colorScheme={isExpired ? 'red' : 'green'}>
         /{data.shortUrl}
       </Tag>
     </Td>
@@ -87,13 +93,12 @@ export default function PreviousURL({data}) {
 
     <Td>
       <Flex justifyContent={'flex-end'} gap={2}>
-        <IconButton isDisabled={isExpired} icon={hasCopied ? <FaRegThumbsUp/> : <FaRegCopy/>} onClick={(e) => {
+        <IconButton borderRadius={8} cursor={'pointer'} isDisabled={isExpired} icon={hasCopied ? <FaRegThumbsUp/> : <FaRegCopy/>} onClick={(e) => {
           e.stopPropagation()
           setCopyValue()
         }} aria-label={"Copy"}/>
-        <IconButton onClick={(e) => {
+        <IconButton borderRadius={8} _hover={{background: 'red.400'}} onClick={(e) => {
           e.stopPropagation()
-
           mutate(data.shortUrl)
         }} icon={<FaRegTrashAlt/>} aria-label={"Delete"}/>
       </Flex>

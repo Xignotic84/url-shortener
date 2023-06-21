@@ -3,20 +3,20 @@ import { mode } from "@chakra-ui/theme-tools";
 
 export const theme = {
   config: {
-    initialColorMode: 'light',
+    initialColorMode: 'dark',
   },
   styles: {
     global: (props) => ({
       body: {
-        background: "white",
-        color: 'black',
+        fontFamily: 'Montserrat, sans-serif',
+        background: "hsl(0, 0%, 10%)",
+        color: 'hsl(0, 0%, 100%)',
+        backgroundRepeat: 'no-repeat',
+        height: '100%'
       },
     })
   },
   colors: {
-    background: {
-      primary: '#030303',
-      secondary: '#2C302E'
-    },
+    accent: '#b8f',
   }
 }
