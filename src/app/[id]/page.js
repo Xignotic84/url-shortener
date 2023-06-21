@@ -15,7 +15,7 @@ export default function Home() {
     if (id !== undefined) {
 
       const res = await axios.get(`/api/url/${id}`).then(r => r.data)
-      return
+      
       if (new Date().getTime() > new Date(res.expirationDate).getTime()) {
         toast({
           title: 'URL Expired',
