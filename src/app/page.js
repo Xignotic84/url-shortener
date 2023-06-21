@@ -17,7 +17,10 @@ export default function Home() {
     const userId = cookies['user-id']
 
     if (!userId)
-      setCookie('user-id', uuidv4())
+      setCookie('user-id', uuidv4(), {
+        path: '/',
+        maxAge: 94608000
+      })
 
 
   }, [cookies])
