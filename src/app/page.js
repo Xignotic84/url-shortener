@@ -8,8 +8,6 @@ import {useCookies} from "react-cookie";
 import {useEffect} from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-
-
 export default function Home() {
   const [cookies, setCookie] = useCookies(['user-id']);
 

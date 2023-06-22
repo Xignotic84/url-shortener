@@ -4,12 +4,10 @@ import {useEffect, useState} from "react";
 import {Box, Center, Spinner, useToast} from "@chakra-ui/react";
 import axios from "axios";
 
-
 export default function Home() {
   const { id } = useParams()
   const router = useRouter()
   const toast = useToast()
-
 
   useEffect(async () => {
     if (id !== undefined) {
